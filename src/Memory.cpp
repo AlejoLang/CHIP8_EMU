@@ -16,8 +16,8 @@ void Memory::set_byte(uint16_t address, uint8_t data) {
 
 uint8_t Memory::get_byte(uint16_t address) {
     if (address < 0 || address > this->size) {
-        std::cerr << "Address out of bounds" << std::endl;
-        return;
+        std::cerr << std::hex << "Address out of bounds " << address << std::endl;
+        return 0;
     }
     return this->start[address];
 }
