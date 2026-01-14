@@ -10,5 +10,6 @@ class Memory {
     Memory(uint16_t size);
     void set_byte(uint16_t address, uint8_t data);
     uint8_t get_byte(uint16_t address);
+    uint16_t get_size();
     ~Memory();
 };
