@@ -20,12 +20,12 @@ class CHIP8 {
     bool key_halted;
 
   public:
-    bool display_request;
     CHIP8();
     void clear_state();
     void run_cycle(Memory* main_memory, Memory* graphics_memory, Keypad* keypad);
     unsigned char* get_video_mem(uint16_t& size);
     bool get_print_signal();
     void set_print_signal(bool v);
+    void update_timers();
     ~CHIP8();
 };

@@ -64,7 +64,11 @@ int main(int argc, char* argv[]) {
     }
 
     while (!exit) {
-        chip->run_cycle(main_memory, graphics_memory, keypad);
+        uint64_t ticks_start = SDL_GetTicks();
+        for (int i = 0; i < 10; ++i) {
+            chip->run_cycle(main_memory, graphics_memory, keypad);
+        }
+        chip->update_timers();
 
         SDL_Event e;
         while (SDL_PollEvent(&e)) {
@@ -118,8 +122,10 @@ int main(int argc, char* argv[]) {
             disp->set_texture(display_buffer);
             disp->draw();
         }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        uint64_t ticks_elapsed = SDL_GetTicks() - ticks_start;
+        if ((1000 / 60) > ticks_elapsed) {
+            SDL_Delay((1000 / 60) - ticks_elapsed);
+        }
     }
 
     delete disp;

@@ -33,6 +33,9 @@ void CHIP8::clear_state() {
 }
 
 void CHIP8::run_cycle(Memory* main_memory, Memory* graphics_memory, Keypad* keypad) {
+    if (this->print_signal) {
+        return;
+    }
     uint16_t opcode = main_memory->get_byte(this->pc) << 8;
     opcode = opcode | main_memory->get_byte(this->pc + 1);
     switch (opcode & 0xF000) {
@@ -336,14 +339,6 @@ void CHIP8::run_cycle(Memory* main_memory, Memory* graphics_memory, Keypad* keyp
         std::cerr << std::hex << "Unknown opcode " << opcode << std::endl;
         break;
     }
-
-    // Update timers
-    if (this->delay_timer > 0) {
-        --this->delay_timer;
-    }
-    if (this->sound_timer > 0) {
-        --this->sound_timer;
-    }
 }
 
 bool CHIP8::get_print_signal() {
@@ -352,6 +347,15 @@ bool CHIP8::get_print_signal() {
 
 void CHIP8::set_print_signal(bool v) {
     this->print_signal = v;
+}
+
+void CHIP8::update_timers() {
+    if (this->delay_timer > 0) {
+        --this->delay_timer;
+    }
+    if (this->sound_timer > 0) {
+        --this->sound_timer;
+    }
 }
 
 CHIP8::~CHIP8() {
